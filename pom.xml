@@ -38,6 +38,7 @@
             <groupId>com.knife</groupId>
             <artifactId>knife-util</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
