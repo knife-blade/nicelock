@@ -1,8 +1,5 @@
 package com.knife.lock.aspect;
 
-import com.knife.example.common.annotation.DistributionLock;
-import com.knife.example.common.aspect.context.DistributionLockContext;
-import com.knife.example.common.aspect.context.DistributionLockContextThreadLocal;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -119,13 +116,16 @@ public class KnifeLockAspect {
     private String assembleFullKey(MethodSignature methodSignature,
                                    Object[] args,
                                    String[] keys) {
-
         Method method = methodSignature.getMethod();
-        Class<?> declaringClass = method.getDeclaringClass();
+        // Class<?> declaringClass = method.getDeclaringClass();
+
+        // 方法全名（包含返回值、类、方法名、参数类型等）
+        String methodGenericString = method.toGenericString();
+        String[] strings = methodGenericString.split(" ");
+        String uniqueMethod = strings[strings.length - 1];
 
         return keyPrefix
-                + ":" + declaringClass.getSimpleName()
-                + ":" + method.getName()
+                + ":" + uniqueMethod
                 + ":" + calculateKey(method, args, keys);
     }
 
