@@ -1,8 +1,8 @@
-package com.knife.lock.aspect;
+package com.suchtool.betterlock.aspect;
 
-import com.knife.lock.annotation.KnifeLock;
-import com.knife.lock.aspect.context.KnifeLockContext;
-import com.knife.lock.aspect.context.KnifeLockContextThreadLocal;
+import com.suchtool.betterlock.annotation.BetterLock;
+import com.suchtool.betterlock.aspect.context.BetterLockContext;
+import com.suchtool.betterlock.aspect.context.BetterLockContextThreadLocal;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 @Aspect
 @Component
 @Order(1)  //确保本AOP在@Transactional之前执行，@Transactional的顺序是Integer最大值
-public class KnifeLockAspect {
+public class BetterLockAspect {
     private static final ExpressionParser PARSER = new SpelExpressionParser();
 
     private static final ParameterNameDiscoverer NAME_DISCOVERER = new DefaultParameterNameDiscoverer();
@@ -43,7 +43,7 @@ public class KnifeLockAspect {
     @Autowired
     private RedissonClient redissonClient;
 
-    @Pointcut("@annotation(com.knife.lock.annotation.KnifeLock)")
+    @Pointcut("@annotation(com.suchtool.betterlock.annotation.BetterLock)")
     public void pointcut() {
     }
 
@@ -56,7 +56,7 @@ public class KnifeLockAspect {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
 
-        KnifeLock distributionLock = method.getAnnotation(KnifeLock.class);
+        BetterLock distributionLock = method.getAnnotation(BetterLock.class);
         String[] keys = distributionLock.keys();
 
         Object[] args = joinPoint.getArgs();
@@ -80,10 +80,10 @@ public class KnifeLockAspect {
             throw throwable;
         }
 
-        KnifeLockContext context = new KnifeLockContext();
+        BetterLockContext context = new BetterLockContext();
         context.setKey(key);
         context.setLock(lock);
-        KnifeLockContextThreadLocal.write(context);
+        BetterLockContextThreadLocal.write(context);
 
         Object object = joinPoint.proceed();
 
@@ -108,12 +108,12 @@ public class KnifeLockAspect {
     }
 
     private void unlockAndClear() {
-        KnifeLockContext context = KnifeLockContextThreadLocal.read();
+        BetterLockContext context = BetterLockContextThreadLocal.read();
         RLock lock = context.getLock();
         if (lock != null) {
             lock.unlock();
         }
-        KnifeLockContextThreadLocal.clear();
+        BetterLockContextThreadLocal.clear();
     }
 
     private String assembleFullKey(MethodSignature methodSignature,
