@@ -1,11 +1,11 @@
-package com.knife.lock.annotation;
+package com.suchtool.betterlock.annotation;
  
 import java.lang.annotation.*;
  
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface KnifeLock {
+public @interface BetterLock {
     /**
      * 锁的key。（SpEL）
      */
