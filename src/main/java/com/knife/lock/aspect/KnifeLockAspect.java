@@ -1,5 +1,8 @@
 package com.knife.lock.aspect;
 
+import com.knife.lock.annotation.KnifeLock;
+import com.knife.lock.aspect.context.KnifeLockContext;
+import com.knife.lock.aspect.context.KnifeLockContextThreadLocal;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -40,7 +43,7 @@ public class KnifeLockAspect {
     @Autowired
     private RedissonClient redissonClient;
 
-    @Pointcut("@annotation(com.knife.example.common.annotation.DistributionLock)")
+    @Pointcut("@annotation(com.knife.lock.annotation.KnifeLock)")
     public void pointcut() {
     }
 
@@ -53,7 +56,7 @@ public class KnifeLockAspect {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
 
-        DistributionLock distributionLock = method.getAnnotation(DistributionLock.class);
+        KnifeLock distributionLock = method.getAnnotation(KnifeLock.class);
         String[] keys = distributionLock.keys();
 
         Object[] args = joinPoint.getArgs();
@@ -77,10 +80,10 @@ public class KnifeLockAspect {
             throw throwable;
         }
 
-        DistributionLockContext context = new DistributionLockContext();
+        KnifeLockContext context = new KnifeLockContext();
         context.setKey(key);
         context.setLock(lock);
-        DistributionLockContextThreadLocal.write(context);
+        KnifeLockContextThreadLocal.write(context);
 
         Object object = joinPoint.proceed();
 
@@ -105,12 +108,12 @@ public class KnifeLockAspect {
     }
 
     private void unlockAndClear() {
-        DistributionLockContext context = DistributionLockContextThreadLocal.read();
+        KnifeLockContext context = KnifeLockContextThreadLocal.read();
         RLock lock = context.getLock();
         if (lock != null) {
             lock.unlock();
         }
-        DistributionLockContextThreadLocal.clear();
+        KnifeLockContextThreadLocal.clear();
     }
 
     private String assembleFullKey(MethodSignature methodSignature,
