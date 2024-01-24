@@ -121,6 +121,7 @@ public class KnifeLockAspect {
 
         // 方法全名（包含返回值、类、方法名、参数类型等）
         String methodGenericString = method.toGenericString();
+        // 去掉返回值信息，只取类、方法名、参数类型等
         String[] strings = methodGenericString.split(" ");
         String uniqueMethod = strings[strings.length - 1];
 
