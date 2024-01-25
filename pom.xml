@@ -2,12 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.13</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
 
     <groupId>com.suchtool</groupId>
     <artifactId>better-lock</artifactId>
@@ -16,9 +10,46 @@
     <packaging>jar</packaging>
     <name>better-lock</name>
     <description>better-lock</description>
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
+
+    <url>https://github.com/knife-blade/better-lock</url>
+
+    <!--用于发布：开源协议...-->
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <!--用于发布：项目链接-->
+    <scm>
+        <url>https://github.com/knife-blade/better-lock</url>
+        <connection>https://github.com/knife-blade/better-lock.git</connection>
+    </scm>
+
+    <!--用于发布：开发者信息-->
+    <developers>
+        <developer>
+            <id>knifeout</id>
+            <name>knifeout</name>
+            <email>knife_out@163.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <version>2.4.13</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -56,21 +87,102 @@
 
     </dependencies>
 
+    <!--用于发布：插件和仓库等信息-->
+    <profiles>
+        <profile>
+            <id>ossrh</id>
+
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <distributionManagement>
+                <snapshotRepository>
+                    <!--此id必须与setting.xml的servers=>server=>id中指定的一致-->
+                    <id>ossrh</id>
+                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+
+            <build>
+                <plugins>
+                    <!--发布到staging-->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <!--自动release-->
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+
+                    <!--发布源码-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.1.1</version>
+                        <configuration>
+                            <charset>UTF-8</charset>
+                            <encoding>UTF-8</encoding>
+                            <docencoding>UTF-8</docencoding>
+                            <additionalJOption>-Xdoclint:none</additionalJOption>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!--gpg加密-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
