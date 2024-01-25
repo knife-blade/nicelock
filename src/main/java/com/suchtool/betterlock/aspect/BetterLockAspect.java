@@ -28,7 +28,6 @@ import java.util.StringJoiner;
 import java.util.concurrent.TimeUnit;
 
 @Aspect
-@Component
 @Order(1)  //确保本AOP在@Transactional之前执行，@Transactional的顺序是Integer最大值
 public class BetterLockAspect {
     private static final ExpressionParser PARSER = new SpelExpressionParser();
