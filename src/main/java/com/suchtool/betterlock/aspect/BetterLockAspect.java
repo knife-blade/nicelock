@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.expression.MethodBasedEvaluationContext;
 import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.Ordered;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.annotation.Order;
 import org.springframework.expression.EvaluationContext;
@@ -28,8 +29,7 @@ import java.util.StringJoiner;
 import java.util.concurrent.TimeUnit;
 
 @Aspect
-@Order(1)  //确保本AOP在@Transactional之前执行，@Transactional的顺序是Integer最大值
-public class BetterLockAspect {
+public class BetterLockAspect implements Ordered {
     private static final ExpressionParser PARSER = new SpelExpressionParser();
 
     private static final ParameterNameDiscoverer NAME_DISCOVERER = new DefaultParameterNameDiscoverer();
@@ -39,8 +39,19 @@ public class BetterLockAspect {
     @Value("${suchtool.betterlock.keyprefix:betterlock}")
     private String keyPrefix;
 
-    @Autowired
-    private RedissonClient redissonClient;
+    private final RedissonClient redissonClient;
+
+    private final int order;
+
+    public BetterLockAspect(RedissonClient redissonClient, int order) {
+        this.redissonClient = redissonClient;
+        this.order = order;
+    }
+
+    @Override
+    public int getOrder() {
+        return order;
+    }
 
     @Pointcut("@annotation(com.suchtool.betterlock.annotation.BetterLock)")
     public void pointcut() {
