@@ -37,7 +37,7 @@ public class BetterLockAspect {
 
     private static final String SEPARATOR = ",";
 
-    @Value("${custom.distribution.lock.prefix:custom:distribution:lock}")
+    @Value("${suchtool.betterlock.keyprefix:betterlock}")
     private String keyPrefix;
 
     @Autowired
