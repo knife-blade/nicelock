@@ -68,7 +68,6 @@
             <groupId>org.redisson</groupId>
             <artifactId>redisson-spring-boot-starter</artifactId>
             <version>3.16.6</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -80,7 +79,7 @@
 
         <dependency>
             <groupId>com.suchtool</groupId>
-            <artifactId>better-util</artifactId>
+            <artifactId>better-util-spring-boot-starter</artifactId>
             <version>0.0.1</version>
             <scope>provided</scope>
         </dependency>
@@ -183,19 +182,16 @@
 
     <build>
         <plugins>
+            <!--指定JDK版本-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <artifactId>maven-compiler-plugin</artifactId>
+                 <version>3.5.1</version>
+                <!-- 指定maven编译的jdk版本。对于JDK8，写成8或者1.8都可以 -->
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>
