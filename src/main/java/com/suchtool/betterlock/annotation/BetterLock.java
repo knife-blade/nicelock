@@ -7,7 +7,9 @@ import java.lang.annotation.*;
 @Documented
 public @interface BetterLock {
     /**
-     * 锁的key。（SpEL）
+     * 锁的key。（支持SpEL）
+     * 参数是对象：#对象名.字段名，例如：#user.emailAddress
+     * 参数不是对象：#字段名。例如：#orderNo
      */
     String[] keys();
 
