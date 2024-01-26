@@ -24,13 +24,14 @@ public class BetterLockConfiguration implements ImportAware {
     }
 
     @Bean(name = "com.suchtool.betterlock.betterLockAspect")
-    public BetterLockAspect betterLockAspect(RedissonClient redissonClient) {
+    public BetterLockAspect betterLockAspect(RedissonClient redissonClient,
+                                             BetterLockProperty betterLockProperty) {
         Integer order = Ordered.LOWEST_PRECEDENCE;
         if (enableBetterLock != null) {
             order = enableBetterLock.<Integer>getNumber("order");
         }
 
-        return new BetterLockAspect(redissonClient, order);
+        return new BetterLockAspect(betterLockProperty, redissonClient, order);
     }
 
     @Bean(name = "com.suchtool.betterlock.betterLockProperty")
