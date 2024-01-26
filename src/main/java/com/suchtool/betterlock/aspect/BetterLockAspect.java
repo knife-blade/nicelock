@@ -3,6 +3,7 @@ package com.suchtool.betterlock.aspect;
 import com.suchtool.betterlock.annotation.BetterLock;
 import com.suchtool.betterlock.aspect.context.BetterLockContext;
 import com.suchtool.betterlock.aspect.context.BetterLockContextThreadLocal;
+import com.suchtool.betterlock.property.BetterLockProperty;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -36,14 +37,16 @@ public class BetterLockAspect implements Ordered {
 
     private static final String SEPARATOR = ",";
 
-    @Value("${suchtool.betterlock.keyprefix:betterlock}")
-    private String keyPrefix;
+    private final BetterLockProperty betterLockProperty;
 
     private final RedissonClient redissonClient;
 
     private final int order;
 
-    public BetterLockAspect(RedissonClient redissonClient, int order) {
+    public BetterLockAspect(BetterLockProperty betterLockProperty,
+                            RedissonClient redissonClient,
+                            int order) {
+        this.betterLockProperty = betterLockProperty;
         this.redissonClient = redissonClient;
         this.order = order;
     }
@@ -138,7 +141,7 @@ public class BetterLockAspect implements Ordered {
         String[] strings = methodGenericString.split(" ");
         String uniqueMethod = strings[strings.length - 1];
 
-        return keyPrefix
+        return betterLockProperty.getKeyPrefix()
                 + ":" + uniqueMethod
                 + ":" + calculateKey(method, args, keys);
     }

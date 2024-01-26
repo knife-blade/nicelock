@@ -2,7 +2,9 @@ package com.suchtool.betterlock.configuration;
 
 import com.suchtool.betterlock.annotation.EnableBetterLock;
 import com.suchtool.betterlock.aspect.BetterLockAspect;
+import com.suchtool.betterlock.property.BetterLockProperty;
 import org.redisson.api.RedissonClient;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportAware;
@@ -29,5 +31,11 @@ public class BetterLockConfiguration implements ImportAware {
         }
 
         return new BetterLockAspect(redissonClient, order);
+    }
+
+    @Bean(name = "com.suchtool.betterlock.betterLockProperty")
+    @ConfigurationProperties(prefix = "suchtool.betterlock")
+    public BetterLockProperty betterLockProperty() {
+        return new BetterLockProperty();
     }
 }
