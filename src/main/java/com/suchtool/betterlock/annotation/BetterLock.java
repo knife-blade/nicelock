@@ -8,8 +8,8 @@ import java.lang.annotation.*;
 public @interface BetterLock {
     /**
      * 锁的key。（支持SpEL）
-     * 参数是对象：#对象名.字段名，例如：#user.emailAddress
-     * 参数不是对象：#字段名。例如：#orderNo
+     * <p>如果参数是对象，这样写：#对象名.字段名，例如：#user.userName</p>
+     * <p>如果参数不是对象，这样写：#字段名。例如：#orderNo</p>
      */
     String[] keys();
 
