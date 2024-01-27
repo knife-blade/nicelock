@@ -1,4 +1,4 @@
-package com.suchtool.betterlock.aspect.context;
+package com.suchtool.nicelock.aspect.context;
 import lombok.Data;
 import org.redisson.api.RLock;
 
@@ -6,7 +6,7 @@ import org.redisson.api.RLock;
  * 分布式锁的上下文信息
  */
 @Data
-public class BetterLockContext {
+public class NiceLockContext {
     /**
      * 键
      */

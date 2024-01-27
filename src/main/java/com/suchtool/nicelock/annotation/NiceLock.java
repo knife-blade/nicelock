@@ -1,11 +1,11 @@
-package com.suchtool.betterlock.annotation;
+package com.suchtool.nicelock.annotation;
  
 import java.lang.annotation.*;
  
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface BetterLock {
+public @interface NiceLock {
     /**
      * 锁的key。（支持SpEL）
      * <p>如果参数是对象，这样写：#对象名.字段名，例如：#user.userName</p>

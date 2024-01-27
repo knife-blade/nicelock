@@ -1,26 +1,22 @@
-package com.suchtool.betterlock.aspect;
+package com.suchtool.nicelock.aspect;
 
-import com.suchtool.betterlock.annotation.BetterLock;
-import com.suchtool.betterlock.aspect.context.BetterLockContext;
-import com.suchtool.betterlock.aspect.context.BetterLockContextThreadLocal;
-import com.suchtool.betterlock.property.BetterLockProperty;
+import com.suchtool.nicelock.annotation.NiceLock;
+import com.suchtool.nicelock.aspect.context.NiceLockContext;
+import com.suchtool.nicelock.aspect.context.NiceLockContextThreadLocal;
+import com.suchtool.nicelock.property.NiceLockProperty;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.expression.MethodBasedEvaluationContext;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.Ordered;
 import org.springframework.core.ParameterNameDiscoverer;
-import org.springframework.core.annotation.Order;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -30,23 +26,23 @@ import java.util.StringJoiner;
 import java.util.concurrent.TimeUnit;
 
 @Aspect
-public class BetterLockAspect implements Ordered {
+public class NiceLockAspect implements Ordered {
     private static final ExpressionParser PARSER = new SpelExpressionParser();
 
     private static final ParameterNameDiscoverer NAME_DISCOVERER = new DefaultParameterNameDiscoverer();
 
     private static final String SEPARATOR = ",";
 
-    private final BetterLockProperty betterLockProperty;
+    private final NiceLockProperty niceLockProperty;
 
     private final RedissonClient redissonClient;
 
     private final int order;
 
-    public BetterLockAspect(BetterLockProperty betterLockProperty,
-                            RedissonClient redissonClient,
-                            int order) {
-        this.betterLockProperty = betterLockProperty;
+    public NiceLockAspect(NiceLockProperty niceLockProperty,
+                          RedissonClient redissonClient,
+                          int order) {
+        this.niceLockProperty = niceLockProperty;
         this.redissonClient = redissonClient;
         this.order = order;
     }
@@ -56,7 +52,7 @@ public class BetterLockAspect implements Ordered {
         return order;
     }
 
-    @Pointcut("@annotation(com.suchtool.betterlock.annotation.BetterLock)")
+    @Pointcut("@annotation(com.suchtool.nicelock.annotation.NiceLock)")
     public void pointcut() {
     }
 
@@ -69,7 +65,7 @@ public class BetterLockAspect implements Ordered {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
 
-        BetterLock distributionLock = method.getAnnotation(BetterLock.class);
+        NiceLock distributionLock = method.getAnnotation(NiceLock.class);
         String[] keys = distributionLock.keys();
 
         Object[] args = joinPoint.getArgs();
@@ -93,10 +89,10 @@ public class BetterLockAspect implements Ordered {
             throw throwable;
         }
 
-        BetterLockContext context = new BetterLockContext();
+        NiceLockContext context = new NiceLockContext();
         context.setKey(key);
         context.setLock(lock);
-        BetterLockContextThreadLocal.write(context);
+        NiceLockContextThreadLocal.write(context);
 
         Object object = joinPoint.proceed();
 
@@ -121,12 +117,12 @@ public class BetterLockAspect implements Ordered {
     }
 
     private void unlockAndClear() {
-        BetterLockContext context = BetterLockContextThreadLocal.read();
+        NiceLockContext context = NiceLockContextThreadLocal.read();
         RLock lock = context.getLock();
         if (lock != null) {
             lock.unlock();
         }
-        BetterLockContextThreadLocal.clear();
+        NiceLockContextThreadLocal.clear();
     }
 
     private String assembleFullKey(MethodSignature methodSignature,
@@ -141,7 +137,7 @@ public class BetterLockAspect implements Ordered {
         String[] strings = methodGenericString.split(" ");
         String uniqueMethod = strings[strings.length - 1];
 
-        return betterLockProperty.getKeyPrefix()
+        return niceLockProperty.getKeyPrefix()
                 + ":" + uniqueMethod
                 + ":" + calculateKey(method, args, keys);
     }

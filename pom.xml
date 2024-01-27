@@ -5,7 +5,7 @@
 
     <groupId>com.suchtool</groupId>
     <artifactId>nice-lock-spring-boot-starter</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
 
     <packaging>jar</packaging>
     <name>nice-lock-spring-boot-starter</name>
@@ -62,13 +62,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.suchtool</groupId>
-            <artifactId>nice-util-spring-boot-starter</artifactId>
-            <version>0.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -77,7 +70,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                 <version>3.5.1</version>
+                <version>3.5.1</version>
                 <!-- 指定maven编译的jdk版本。对于JDK8，写成8或者1.8都可以 -->
                 <configuration>
                     <source>8</source>

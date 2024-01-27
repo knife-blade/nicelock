@@ -1,9 +1,9 @@
-package com.suchtool.betterlock.property;
+package com.suchtool.nicelock.property;
 
 import lombok.Data;
 
 @Data
-public class BetterLockProperty {
+public class NiceLockProperty {
     /**
      * 存到Redis里的key的前缀
      */
