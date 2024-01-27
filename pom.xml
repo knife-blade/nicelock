@@ -13,32 +13,6 @@
 
     <url>https://github.com/knife-blade/better-lock</url>
 
-    <!--用于发布：开源协议...-->
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
-
-    <!--用于发布：项目链接-->
-    <scm>
-        <url>https://github.com/knife-blade/better-lock</url>
-        <connection>https://github.com/knife-blade/better-lock.git</connection>
-    </scm>
-
-    <!--用于发布：开发者信息-->
-    <developers>
-        <developer>
-            <id>knifeout</id>
-            <name>knifeout</name>
-            <email>knife_out@163.com</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </developer>
-    </developers>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -96,6 +70,22 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <!--指定JDK版本-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                 <version>3.5.1</version>
+                <!-- 指定maven编译的jdk版本。对于JDK8，写成8或者1.8都可以 -->
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <!--用于发布：插件和仓库等信息-->
     <profiles>
@@ -191,20 +181,28 @@
         </profile>
     </profiles>
 
-    <build>
-        <plugins>
-            <!--指定JDK版本-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                 <version>3.5.1</version>
-                <!-- 指定maven编译的jdk版本。对于JDK8，写成8或者1.8都可以 -->
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <!--用于发布：开源协议...-->
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <!--用于发布：项目链接-->
+    <scm>
+        <url>https://github.com/knife-blade/better-lock</url>
+        <connection>https://github.com/knife-blade/better-lock.git</connection>
+    </scm>
+    <!--用于发布：开发者信息-->
+    <developers>
+        <developer>
+            <id>knifeout</id>
+            <name>knifeout</name>
+            <email>knife_out@163.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
 
 </project>
