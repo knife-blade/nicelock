@@ -5,7 +5,7 @@
 
     <groupId>com.suchtool</groupId>
     <artifactId>nice-lock-spring-boot-starter</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 
     <packaging>jar</packaging>
     <name>nice-lock-spring-boot-starter</name>
