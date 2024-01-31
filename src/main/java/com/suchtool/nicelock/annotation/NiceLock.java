@@ -1,5 +1,7 @@
 package com.suchtool.nicelock.annotation;
  
+import com.suchtool.nicelock.exception.LockingException;
+
 import java.lang.annotation.*;
  
 @Target({ElementType.METHOD})
@@ -21,10 +23,10 @@ public @interface NiceLock {
     /**
      * 错误提示。若定义了exception，则作为其message。
      */
-    String message() default "正在操作，请稍候重试";
+    String message() default "正在处理，请稍候重试";
 
     /**
      * 报错时抛出的异常
      */
-    Class<? extends Exception> exception() default RuntimeException.class;
+    Class<? extends Exception> exception() default LockingException.class;
 }
