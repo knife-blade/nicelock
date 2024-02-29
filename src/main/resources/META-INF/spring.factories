@@ -1,1 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.suchtool.nicelock.configuration.NiceLockConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.suchtool.nicelock.configuration.NiceLockConfiguration
