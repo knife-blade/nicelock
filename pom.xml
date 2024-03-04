@@ -11,14 +11,14 @@
     </parent>
 
     <groupId>com.suchtool</groupId>
-    <artifactId>nice-lock-spring-boot-starter</artifactId>
-    <version>1.1.1</version>
+    <artifactId>nicelock-spring-boot-starter</artifactId>
+    <version>1.0.0</version>
 
     <packaging>jar</packaging>
-    <name>nice-lock-spring-boot-starter</name>
+    <name>nicelock-spring-boot-starter</name>
     <description>nice distribution lock for SpringBoot project</description>
 
-    <url>https://github.com/knife-blade/nice-lock</url>
+    <url>https://github.com/knife-blade/nicelock</url>
 
     <dependencies>
         <dependency>
@@ -177,8 +177,8 @@
         </license>
     </licenses>
     <scm>
-        <url>https://github.com/knife-blade/nice-lock</url>
-        <connection>https://github.com/knife-blade/nice-lock.git</connection>
+        <url>https://github.com/knife-blade/nicelock</url>
+        <connection>https://github.com/knife-blade/nicelock.git</connection>
     </scm>
     <developers>
         <developer>
