@@ -1,7 +1,7 @@
 # nice-lock
 
 ## 1.介绍
-一个注解，即可使用Java的分布式锁。（基于Redisson，稳定！）
+nicelock：一个注解，即可使用Java的分布式锁。（基于Redisson，稳定！）
 
 ## 2.快速使用
 
@@ -9,7 +9,7 @@
 ```xml
 <dependency>
     <groupId>com.suchtool</groupId>
-    <artifactId>nice-lock-spring-boot-starter</artifactId>
+    <artifactId>nicelock-spring-boot-starter</artifactId>
     <version>{newest-version}</version>
 </dependency>
 ```
