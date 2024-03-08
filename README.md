@@ -1,4 +1,4 @@
-# nice-lock
+# nicelock
 
 ## 1.介绍
 nicelock：一个注解，即可使用Java的分布式锁。（基于Redisson，稳定！）
