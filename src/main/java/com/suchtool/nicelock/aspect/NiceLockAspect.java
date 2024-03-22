@@ -4,6 +4,7 @@ import com.suchtool.nicelock.annotation.NiceLock;
 import com.suchtool.nicelock.aspect.context.NiceLockContext;
 import com.suchtool.nicelock.aspect.context.NiceLockContextThreadLocal;
 import com.suchtool.nicelock.property.NiceLockProperty;
+import com.suchtool.nicelock.util.lock.NiceLockUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -35,15 +36,15 @@ public class NiceLockAspect implements Ordered {
 
     private final NiceLockProperty niceLockProperty;
 
-    private final RedissonClient redissonClient;
+    private final NiceLockUtil niceLockUtil;
 
     private final int order;
 
     public NiceLockAspect(NiceLockProperty niceLockProperty,
-                          RedissonClient redissonClient,
+                          NiceLockUtil niceLockUtil,
                           int order) {
         this.niceLockProperty = niceLockProperty;
-        this.redissonClient = redissonClient;
+        this.niceLockUtil = niceLockUtil;
         this.order = order;
     }
 
@@ -71,14 +72,8 @@ public class NiceLockAspect implements Ordered {
         Object[] args = joinPoint.getArgs();
 
         String key = assembleFullKey(methodSignature, args, keys);
-        RLock lock = redissonClient.getLock(key);
-        boolean locked = false;
-
-        if (distributionLock.acquireTimeout() == 0L) {
-            locked = lock.tryLock();
-        } else {
-            locked = lock.tryLock(distributionLock.acquireTimeout(), TimeUnit.MILLISECONDS);
-        }
+        boolean locked = niceLockUtil.tryLock(key, distributionLock.acquireTimeout(),
+                TimeUnit.MILLISECONDS);
         if (!locked) {
             Class<?> exceptionClass = distributionLock.exception();
             Throwable throwable = (Throwable) exceptionClass.newInstance();
@@ -91,7 +86,6 @@ public class NiceLockAspect implements Ordered {
 
         NiceLockContext context = new NiceLockContext();
         context.setKey(key);
-        context.setLock(lock);
         NiceLockContextThreadLocal.write(context);
 
         Object object = joinPoint.proceed();
@@ -118,10 +112,8 @@ public class NiceLockAspect implements Ordered {
 
     private void unlockAndClear() {
         NiceLockContext context = NiceLockContextThreadLocal.read();
-        RLock lock = context.getLock();
-        if (lock != null) {
-            lock.unlock();
-        }
+        String key = context.getKey();
+        niceLockUtil.unlock(key);
         NiceLockContextThreadLocal.clear();
     }
 
