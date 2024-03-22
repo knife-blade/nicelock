@@ -1,6 +1,6 @@
 package com.suchtool.nicelock.aspect.context;
+
 import lombok.Data;
-import org.redisson.api.RLock;
 
 /**
  * 分布式锁的上下文信息
@@ -12,8 +12,4 @@ public class NiceLockContext {
      */
     private String key;
 
-    /**
-     * 锁
-     */
-    private RLock lock;
 }
