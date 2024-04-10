@@ -7,8 +7,6 @@ import com.suchtool.nicelock.property.NiceLockProperty;
 import com.suchtool.nicelock.util.lock.NiceLockUtil;
 import com.suchtool.nicelock.util.lock.impl.NiceLockUtilLocalImpl;
 import com.suchtool.nicelock.util.lock.impl.NiceLockUtilRedisImpl;
-import com.suchtool.nicetool.util.spring.ApplicationContextHolder;
-import org.redisson.api.RedissonClient;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +16,7 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.lang.Nullable;
 
-@Configuration(proxyBeanMethods = false)
+@Configuration(value = "com.suthtool.nicelock.niceLockConfiguration", proxyBeanMethods = false)
 public class NiceLockConfiguration implements ImportAware {
     @Nullable
     protected AnnotationAttributes enableNiceLock;
