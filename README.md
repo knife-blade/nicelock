@@ -41,8 +41,8 @@ spring:
 ### 3.使用
 ```
 @NiceLock(keys = {"#user.id", "#orderNo"})
-public String createOrder(User user, String orderNo) {
-    System.out.println("创建订单");
+public String editOrder(User user, String orderNo) {
+    System.out.println("修改订单");
     return "success";
 }
 ```
@@ -76,8 +76,8 @@ public class DemoApplication {
 ### 2.配置大全
 支持yml等配置方式。
 
-| 配置                             | 描述                            | 默认值      |
-|--------------------------------|-------------------------------|----------|
-| suchtool.nicelock.storage-type | 存储方式。可选值：local：本地；redis：Redis | local    |
-| suchtool.nicelock.key-prefix   | 缓存的key的前缀                    | nicelock |
+| 配置                             | 描述               | 默认值       |
+|--------------------------------|------------------|-----------|
+| suchtool.nicelock.storage-type | 存储方式。可选值：local、redis | local（本地） |
+| suchtool.nicelock.key-prefix   | 缓存的key的前缀        | nicelock  |
 
