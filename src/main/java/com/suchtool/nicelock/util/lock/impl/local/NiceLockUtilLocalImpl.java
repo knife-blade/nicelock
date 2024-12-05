@@ -2,6 +2,7 @@ package com.suchtool.nicelock.util.lock.impl.local;
 
 import com.suchtool.nicelock.util.lock.NiceLockUtil;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -9,18 +10,17 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class NiceLockUtilLocalImpl implements NiceLockUtil {
-    private final Map<String, NiceLockLocalLockWrapper> lockMap = new ConcurrentHashMap<>();
+    private final Map<String, NiceLockLocalLockWrapper> lockMap = new HashMap<>();
 
     @Override
     public boolean tryLock(String key, long timeout, TimeUnit unit) {
         NiceLockLocalLockWrapper wrapper = getOrCreateLockWrapper(key);
 
-        boolean locked = false;
+        boolean locked;
 
         try {
-            Lock lock = wrapper.getLock();
-            locked = lock.tryLock(timeout, TimeUnit.MILLISECONDS);
-            wrapper.getCount().getAndIncrement();
+            locked = wrapper.getLock().tryLock(timeout, TimeUnit.MILLISECONDS);
+            wrapper.setCount(wrapper.getCount() + 1);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -29,17 +29,20 @@ public class NiceLockUtilLocalImpl implements NiceLockUtil {
     }
 
     @Override
-    public synchronized void unlock(String key) {
+    public void unlock(String key) {
         NiceLockLocalLockWrapper wrapper = getLockWrapper(key);
         if (wrapper == null) {
             return;
         }
 
         synchronized (wrapper) {
-            int i = wrapper.getCount().decrementAndGet();
+            int i = wrapper.getCount() - 1;
+            wrapper.setCount(i);
+
+            Lock lock = wrapper.getLock();
+            lock.unlock();
+
             if (i <= 0) {
-                Lock lock = wrapper.getLock();
-                lock.unlock();
                 lockMap.remove(key);
             }
         }
@@ -50,6 +53,7 @@ public class NiceLockUtilLocalImpl implements NiceLockUtil {
         if (wrapper == null) {
             wrapper = new NiceLockLocalLockWrapper();
             wrapper.setLock(new ReentrantLock());
+            lockMap.put(key, wrapper);
         }
 
         return wrapper;
