@@ -1,4 +1,4 @@
-package com.suchtool.nicelock.util.lock.impl;
+package com.suchtool.nicelock.util.lock.impl.redis;
 
 import com.suchtool.nicelock.util.lock.NiceLockUtil;
 import org.redisson.api.RLock;
