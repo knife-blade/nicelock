@@ -1,6 +1,6 @@
 package com.suchtool.nicelock.annotation;
  
-import com.suchtool.nicelock.exception.LockFailException;
+import com.suchtool.nicelock.exception.NiceLockLockFailException;
 
 import java.lang.annotation.*;
  
@@ -28,5 +28,5 @@ public @interface NiceLock {
     /**
      * 报错时抛出的异常
      */
-    Class<? extends Exception> exception() default LockFailException.class;
+    Class<? extends Exception> exception() default NiceLockLockFailException.class;
 }
