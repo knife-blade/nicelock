@@ -2,7 +2,7 @@ package com.suchtool.nicelock.configuration;
 
 import com.suchtool.nicelock.annotation.EnableNiceLock;
 import com.suchtool.nicelock.aspect.NiceLockAspect;
-import com.suchtool.nicelock.constant.StorageTypeEnum;
+import com.suchtool.nicelock.constant.NiceLockStorageTypeEnum;
 import com.suchtool.nicelock.property.NiceLockProperty;
 import com.suchtool.nicelock.util.lock.NiceLockUtil;
 import com.suchtool.nicelock.util.lock.impl.local.NiceLockUtilLocalImpl;
@@ -34,7 +34,7 @@ public class NiceLockConfiguration implements ImportAware {
 
     @Bean(name = "com.suchtool.nicelock.niceLockUtil")
     public NiceLockUtil niceLockUtil(NiceLockProperty niceLockProperty) {
-        if (StorageTypeEnum.REDIS.equals(niceLockProperty.getStorageType())) {
+        if (NiceLockStorageTypeEnum.REDIS.equals(niceLockProperty.getStorageType())) {
             return new NiceLockUtilRedisImpl();
         } else {
             return new NiceLockUtilLocalImpl();
