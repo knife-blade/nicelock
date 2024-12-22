@@ -3,9 +3,13 @@
 ## 1.介绍
 nicelock：一个注解，即可使用Java的锁；支持本地锁和分布式锁（分布式锁基于Redisson，稳定！）。
 
+使用场景：防重复点击。例如：
+1. 防止同一用户在极短时间多次支付同一个订单。（第一次还没操作完毕，就开始了第二次操作）
+2. 防止多用户同时注册同一个用户名。
+
 ## 2.快速使用
 
-### 1.引入依赖
+### 2.1 引入依赖
 ```xml
 <dependency>
     <groupId>com.suchtool</groupId>
@@ -14,7 +18,7 @@ nicelock：一个注解，即可使用Java的锁；支持本地锁和分布式�
 </dependency>
 ```
 
-### 2.配置缓存方式
+### 2.2 配置缓存方式
 
 本组件默认使用本地缓存。
 
@@ -38,7 +42,9 @@ spring:
     password: 222333
 ```
 
-### 3.使用
+### 2.3使用
+
+#### 2.3.1 示例
 ```
 @NiceLock(keys = {"#user.id", "#orderNo"})
 public String editOrder(User user, String orderNo) {
@@ -46,6 +52,16 @@ public String editOrder(User user, String orderNo) {
     return "success";
 }
 ```
+
+以上述代码为例，可以保证一个用户同时多次编辑同一个订单时，只有一个是成功的。
+
+#### 2.3.2 @NiceLock字段含义
+| 字段名  | 含义  | 默认值  |
+| ------------ | ------------ | ------------ |
+| keys | 锁的key。（支持SpEL）  | 空数组 |
+| acquireTimeout | 获取锁的超时时间 | 0（即：若有其他的正在执行，则立即返回） |
+| message | 错误提示 | 正在处理，请稍候重试  |
+| exception | 报错时抛出的异常 | NiceLockLockFailException  |
 
 ## 3.详细配置
 
