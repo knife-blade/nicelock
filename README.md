@@ -45,6 +45,11 @@ spring:
 ### 2.3使用
 
 #### 2.3.1 示例
+
+下边代码可以保证一个用户同时多次编辑同一个订单时，只有一个是成功的。
+
+例1：对入参字段加锁
+
 ```
 @NiceLock(keys = {"#user.id", "#orderNo"})
 public String editOrder(User user, String orderNo) {
@@ -53,7 +58,18 @@ public String editOrder(User user, String orderNo) {
 }
 ```
 
-以上述代码为例，可以保证一个用户同时多次编辑同一个订单时，只有一个是成功的。
+例2：对静态方法字段加锁
+
+如果字段是静态获取的，可以这样写：
+
+```
+@NiceLock(keys = {"T(com.example.common.util.user.util.UserUtil).currentUser.getId()", "#orderNo"})
+public String editOrder(String orderNo) {
+    System.out.println("修改订单");
+    return "success";
+}
+
+```
 
 #### 2.3.2 @NiceLock字段含义
 | 字段名  | 含义  | 默认值  |
