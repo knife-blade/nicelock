@@ -76,7 +76,7 @@ public String editOrder(String orderNo) {
 | ------------ | ------------ | ------------ |
 | keys | 锁的key。（支持SpEL）  | 空数组 |
 | acquireTimeout | 获取锁的超时时间 | 0（即：若有其他的正在执行，则立即返回） |
-| message | 错误提示 | 正在处理，请稍候重试  |
+| message | 错误提示 | 正在处理，请稍后重试  |
 | exception | 报错时抛出的异常 | NiceLockLockFailException  |
 
 ## 3.详细配置

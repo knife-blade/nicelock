@@ -23,7 +23,7 @@ public @interface NiceLock {
     /**
      * 错误提示。若定义了exception，则作为其message。
      */
-    String message() default "正在处理，请稍候重试";
+    String message() default "正在处理，请稍后重试";
 
     /**
      * 报错时抛出的异常
