@@ -13,7 +13,7 @@ public @interface NiceLock {
      * <p>如果参数是对象，这样写：#对象名.字段名，例如：#user.userName</p>
      * <p>如果参数不是对象，这样写：#字段名。例如：#orderNo</p>
      */
-    String[] keys();
+    String[] keys() default {};
 
     /**
      * 获取锁的超时时间。单位：毫秒
