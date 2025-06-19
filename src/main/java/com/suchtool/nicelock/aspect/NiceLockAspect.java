@@ -58,11 +58,7 @@ public class NiceLockAspect implements Ordered {
     }
 
     @Before("pointcut()")
-    public void before() {
-    }
-
-    @Around("pointcut()")
-    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+    public void before(JoinPoint joinPoint) throws Throwable {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
 
@@ -87,10 +83,6 @@ public class NiceLockAspect implements Ordered {
         NiceLockContext context = new NiceLockContext();
         context.setKey(key);
         NiceLockContextThreadLocal.write(context);
-
-        Object object = joinPoint.proceed();
-
-        return object;
     }
 
     @AfterReturning(value = "pointcut()", returning = "returnValue")
@@ -129,9 +121,13 @@ public class NiceLockAspect implements Ordered {
         String[] strings = methodGenericString.split(" ");
         String uniqueMethod = strings[strings.length - 1];
 
-        return niceLockProperty.getKeyPrefix()
-                + ":" + uniqueMethod
-                + ":" + calculateKey(method, args, keys);
+        String fullKey = niceLockProperty.getKeyPrefix() + ":" + uniqueMethod;
+        if (keys != null && keys.length > 0) {
+            fullKey = fullKey
+                    + ":" + calculateKey(method, args, keys);
+        }
+
+        return fullKey;
     }
 
     private String calculateKey(Method method, Object[] args, String[] definitionKeys) {
