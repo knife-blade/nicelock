@@ -1,7 +1,7 @@
 package com.suchtool.nicelock.exception;
 
 /**
- * 已锁定异常
+ * 加锁失败异常
  */
 public class NiceLockLockFailException extends RuntimeException {
     public NiceLockLockFailException() {
