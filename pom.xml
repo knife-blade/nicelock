@@ -12,7 +12,7 @@
 
     <groupId>com.suchtool</groupId>
     <artifactId>nicelock-spring-boot-starter</artifactId>
-    <version>1.1.11</version>
+    <version>1.1.12</version>
 
     <packaging>jar</packaging>
     <name>nicelock-spring-boot-starter</name>
@@ -60,7 +60,7 @@
         <dependency>
             <groupId>com.suchtool</groupId>
             <artifactId>nicetool-spring-boot-starter</artifactId>
-            <version>1.1.23</version>
+            <version>1.1.32</version>
         </dependency>
 
     </dependencies>
@@ -201,8 +201,9 @@
     <!--用于发布-->
     <licenses>
         <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <name>MIT License</name>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
     <scm>
